@@ -62,10 +62,10 @@ window.renderStatistics = function (ctx, names, times) {
       } else {
         return getRandomBlueColor();
       }
-    }
+    };
 
     renderResult(ctx, names[i], i + 1, getColumnColor(), (COLUMN_HEIGHT * times[i]) / getMaxTime(times), Math.floor(times[i]));
-  };
+  }
 
 
   // renderResult(ctx, 'Вы', 1, 'rgba(255, 0, 0, 1)', 120, '2725');
