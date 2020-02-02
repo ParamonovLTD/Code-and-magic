@@ -53,8 +53,6 @@ window.renderStatistics = function (ctx, names, times) {
   ctx.fillText('Ура вы победили!', CLOUD_X + PLAYER_X, CLOUD_Y + GAP * 2);
   ctx.fillText('Список результатов: ', CLOUD_X + PLAYER_X, CLOUD_Y + GAP * 2.5 + TEXT_HEIGHT);
 
-  // renderResult(ctx, 'Вы', 1, 'rgba(255, 0, 0, 1)', 120, '2725');
-
   for (var i = 0; i < names.length; i++) {
     var getColumnColor = function () {
       if (names[i] === 'Вы') {
@@ -66,36 +64,4 @@ window.renderStatistics = function (ctx, names, times) {
 
     renderResult(ctx, names[i], i + 1, getColumnColor(), (COLUMN_HEIGHT * times[i]) / getMaxTime(times), Math.floor(times[i]));
   }
-
-
-  // renderResult(ctx, 'Вы', 1, 'rgba(255, 0, 0, 1)', 120, '2725');
-
-  // renderResult(ctx, 'Кекс', 2, getRandomBlueColor(), 80, '2001');
-
-  // renderResult(ctx, 'Катя', 3, getRandomBlueColor(), 30, '1052');
-
-  // renderResult(ctx, 'Игорь', 4, getRandomBlueColor(), 100, '2497');
-  // ctx.fillText ('Вы', 120, 240);
-  // ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-  // renderColumn (ctx, 120, 105, 120);
-  // ctx.fillStyle = '#000';
-  // ctx.fillText ('2725', 120, 85);
-
-  // ctx.fillText ('Кекс', COLUMN_WIDTH + 170, 240);
-  // ctx.fillStyle = 'hsl(230, 50%, 50%)';
-  // renderColumn (ctx, COLUMN_WIDTH + 170, 145, 80);
-  // ctx.fillStyle = '#000';
-  // ctx.fillText ('2001', COLUMN_WIDTH + 170, 125);
-
-  // ctx.fillText ('Катя', COLUMN_WIDTH * 2 + 220, 240);
-  // ctx.fillStyle = 'hsl(230, 20%, 50%)';
-  // renderColumn (ctx, COLUMN_WIDTH * 2 + 220, 195, 30);
-  // ctx.fillStyle = '#000';
-  // ctx.fillText ('1052', COLUMN_WIDTH * 2 + 220, 175);
-
-  // ctx.fillText ('Игорь', COLUMN_WIDTH * 3 + 270, 240);
-  // ctx.fillStyle = 'hsl(230, 70%, 50%)';
-  // renderColumn (ctx, COLUMN_WIDTH * 3 + 270, 125, 100);
-  // ctx.fillStyle = '#000';
-  // ctx.fillText ('2497', COLUMN_WIDTH * 3 + 270, 105);
 };
