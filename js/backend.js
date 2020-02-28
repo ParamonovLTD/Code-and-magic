@@ -9,7 +9,11 @@
     xhr.open('get', URL);
     xhr.addEventListener('load', function () {
       if (xhr.status === 200 && xhr.readyState === XMLHttpRequest.DONE) {
-        onLoad(xhr.response);
+        for (var wiz in onLoad) {
+          if (onLoad.hasOwnProperty(wiz)) {
+            onLoad[wiz](xhr.response);
+          }
+        }
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }

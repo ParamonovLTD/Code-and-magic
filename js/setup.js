@@ -30,15 +30,14 @@
 
   var getWizard = function (data) {
     for (var i = 0; i < wizardQuantity; i++) {
-      var currentWizard = data[window.util.getRandomNumber(0, data.length - 1)];
-      wizards.push(currentWizard);
+      var currentWizard = window.util.getRandomNumber(0, data.length - 1);
+      wizards.push(data[currentWizard]);
       data.splice(currentWizard, 1);
     }
     wizards.forEach(function (mage) {
       data.push(mage);
     });
   };
-  window.backend.load(getWizard, onError);
 
 
   var renderWizard = function (wizard) {
@@ -51,13 +50,18 @@
 
 
   var appendWizards = function () {
-    for (var i = 0; i < wizards.length; i++) {
+    for (var i = 0; i < wizardQuantity; i++) {
       wizardsFragment.appendChild(renderWizard(wizards[i]));
     }
     similarWizardElement.appendChild(wizardsFragment);
   };
-  window.backend.load(appendWizards, onError);
 
+
+  var wizardAssembly = {
+    getWizard: getWizard,
+    appendWizards: appendWizards
+  };
+  window.backend.load(wizardAssembly, onError);
 
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), onSuccess, onError);
