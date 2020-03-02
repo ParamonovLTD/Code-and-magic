@@ -2,71 +2,69 @@
 
 (function () {
   var wizards = [];
-  var possibleNames = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-  var possibleSurnames = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-  var possibleCoatColors = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-  var possibleEyesColors = ['black', 'red', 'blue', 'yellow', 'green'];
-  var chosenNames = [];
-  var chosenSurnames = [];
+  var wizardQuantity = 4;
   var similarWizardElement = document.querySelector('.setup-similar-list');
   var similarWizardTemplate = document.querySelector('#similar-wizard-template')
       .content
       .querySelector('.setup-similar-item');
   var wizardsFragment = document.createDocumentFragment();
+  var setup = document.querySelector('.setup');
+  var form = setup.querySelector('.setup-wizard-form');
 
-  var getRandomName = function () {
-    var randomName = window.util.getRandomNumber(0, possibleNames.length - 1);
-    var randomSurname = window.util.getRandomNumber(0, possibleSurnames.length - 1);
-    var currentName = possibleNames[randomName] + ' ' + possibleSurnames[randomSurname];
-    possibleNames.splice(randomName, 1);
-    possibleSurnames.splice(randomSurname, 1);
-    chosenNames.push(randomName);
-    chosenSurnames.push(randomSurname);
-    return currentName;
+
+  var onSuccess = function () {
+    setup.classList.add('hidden');
+  };
+  var onError = function (message) {
+    var elem = document.createElement('div');
+    elem.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: #ff0000';
+    elem.style.position = 'fixed';
+    elem.style.bottom = '0';
+    elem.style.width = '100%';
+    elem.style.padding = '3px';
+
+    elem.textContent = message;
+    document.body.insertAdjacentElement('afterbegin', elem);
   };
 
-  var getRandomCoatColor = function () {
-    return possibleCoatColors[window.util.getRandomNumber(0, possibleCoatColors.length)];
-  };
 
-  var getRandomEyesColor = function () {
-    return possibleEyesColors[window.util.getRandomNumber(0, possibleEyesColors.length)];
-  };
-
-  var getWizard = function () {
-    for (var i = 0; i < 4; i++) {
-      var wizard = {
-        name: getRandomName(),
-        coatColor: getRandomCoatColor(),
-        eyesColor: getRandomEyesColor()
-      };
-      wizards.push(wizard);
+  var getWizard = function (data) {
+    for (var i = 0; i < wizardQuantity; i++) {
+      var currentWizard = window.util.getRandomNumber(0, data.length - 1);
+      wizards.push(data[currentWizard]);
+      data.splice(currentWizard, 1);
     }
-    chosenNames.forEach(function (name) {
-      possibleNames.push(name);
-    });
-    chosenSurnames.forEach(function (surname) {
-      possibleSurnames.push(surname);
+    wizards.forEach(function (mage) {
+      data.push(mage);
     });
   };
 
-  getWizard();
 
   var renderWizard = function (wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
     return wizardElement;
   };
 
+
   var appendWizards = function () {
-    for (var i = 0; i < wizards.length; i++) {
+    for (var i = 0; i < wizardQuantity; i++) {
       wizardsFragment.appendChild(renderWizard(wizards[i]));
     }
-
     similarWizardElement.appendChild(wizardsFragment);
   };
-  appendWizards();
 
+
+  var wizardAssembly = {
+    getWizard: getWizard,
+    appendWizards: appendWizards
+  };
+  window.backend.load(wizardAssembly, onError);
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), onSuccess, onError);
+    evt.preventDefault();
+  });
 })();
