@@ -10,10 +10,13 @@
   var wizardsFragment = document.createDocumentFragment();
   var setup = document.querySelector('.setup');
   var form = setup.querySelector('.setup-wizard-form');
+  var allWizards = [];
 
 
-  var onSuccess = function () {
+  var onSuccess = function (data) {
+    allWizards = data;
     setup.classList.add('hidden');
+    return allWizards;
   };
   var onError = function (message) {
     var elem = document.createElement('div');
@@ -28,15 +31,36 @@
   };
 
 
-  var getWizard = function (data) {
-    for (var i = 0; i < wizardQuantity; i++) {
-      var currentWizard = window.util.getRandomNumber(0, data.length - 1);
-      wizards.push(data[currentWizard]);
-      data.splice(currentWizard, 1);
-    }
-    wizards.forEach(function (mage) {
-      data.push(mage);
+  var getWizards = function () {
+    wizards = [];
+    var setupWizard = document.querySelector('.setup-wizard');
+    var playerWizardCoat = setupWizard.querySelector('.wizard-coat');
+    var playerWizardEyes = setupWizard.querySelector('.wizard-eyes');
+
+    var wizardsPoints = allWizards
+      .map(function (wizard) {
+        var points = 0;
+        if (wizard.colorCoat === playerWizardCoat.style.fill) {
+          points += 2;
+        }
+        if (wizard.colorEyes === playerWizardEyes.style.fill) {
+          points += 1;
+        }
+        return {points: points, wizard: wizard};
+      })
+      .sort(function (a, b) {
+        if (a.points > b.points) {
+          return -1;
+        }
+        if (a.points < b.points) {
+          return 1;
+        }
+        return 0;
+      });
+    wizardsPoints.forEach(function (wiz) {
+      wizards.push(wiz.wizard);
     });
+    return wizards;
   };
 
 
@@ -50,6 +74,7 @@
 
 
   var appendWizards = function () {
+    getWizards();
     for (var i = 0; i < wizardQuantity; i++) {
       wizardsFragment.appendChild(renderWizard(wizards[i]));
     }
@@ -58,13 +83,29 @@
 
 
   var wizardAssembly = {
-    getWizard: getWizard,
+    onSuccess: onSuccess,
     appendWizards: appendWizards
   };
   window.backend.load(wizardAssembly, onError);
+
+
+  var wizardsChange = function () {
+    var renderedWizards = similarWizardElement.querySelectorAll('.setup-similar-item');
+    renderedWizards.forEach(function (wizard) {
+      wizard.remove();
+    });
+    appendWizards();
+  };
+
 
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), onSuccess, onError);
     evt.preventDefault();
   });
+
+
+  window.setup = {
+    appendWizards: appendWizards,
+    wizardsChange: wizardsChange
+  };
 })();
