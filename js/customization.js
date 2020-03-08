@@ -12,6 +12,7 @@
   var wizardEyesValue = document.querySelector('.wizard-eyes-value');
   var wizardFireballValue = document.querySelector('.wizard-fireball-value');
 
+
   var getRandomWizardCoatColor = function () {
     var currentCoatColor = playerWizardCoat.style.fill;
     var randomCoatColor = availableCoatColors[window.util.getRandomNumber(0, availableCoatColors.length - 1)];
@@ -20,7 +21,9 @@
     }
     playerWizardCoat.style.fill = randomCoatColor;
     wizardCoatValue.value = randomCoatColor;
+    return randomCoatColor;
   };
+
 
   var getRandomWizardEyesColor = function () {
     var currentEyesColor = playerWizardEyes.style.fill;
@@ -32,10 +35,12 @@
     wizardEyesValue.value = randomEyesColor;
   };
 
+
   var setDefaultFireballColor = function () {
     playerWizardFireball.style.backgroundColor = '#ee4830';
   };
   setDefaultFireballColor();
+
 
   var getRandomWizardFireballColor = function () {
     var currentFireballColorInRgb = playerWizardFireball.style.backgroundColor;
@@ -48,10 +53,42 @@
     wizardFireballValue.value = randomFireballColor;
   };
 
+
+  var onCoatChange = function () {
+    getRandomWizardCoatColor();
+    setTimeout(window.setup.wizardsChange, 500);
+    // window.util.debounce(function () {
+    //   window.setup.wizardsChange();
+    //   console.log('asd');
+    // });
+  };
+  var onEyesChange = function () {
+    getRandomWizardEyesColor();
+    setTimeout(window.setup.wizardsChange, 500);
+    // window.setup.wizardsChange();
+  };
+  var onFireballChange = function () {
+    getRandomWizardFireballColor();
+  };
+
+
   var wizardCustomization = function () {
-    playerWizardCoat.addEventListener('click', getRandomWizardCoatColor);
-    playerWizardEyes.addEventListener('click', getRandomWizardEyesColor);
-    playerWizardFireball.addEventListener('click', getRandomWizardFireballColor);
+    playerWizardCoat.addEventListener('click', onCoatChange);
+    playerWizardEyes.addEventListener('click', onEyesChange);
+    playerWizardFireball.addEventListener('click', onFireballChange);
   };
   wizardCustomization();
+
+
+  var wizardOnPageLoad = function () {
+    getRandomWizardCoatColor();
+    getRandomWizardEyesColor();
+    getRandomWizardFireballColor();
+  };
+  document.addEventListener('DOMContentLoaded', wizardOnPageLoad);
+
+
+  window.customization = {
+    getRandomWizardCoatColor: getRandomWizardCoatColor
+  };
 })();
