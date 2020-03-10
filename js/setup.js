@@ -37,8 +37,8 @@
     var playerWizardCoat = setupWizard.querySelector('.wizard-coat');
     var playerWizardEyes = setupWizard.querySelector('.wizard-eyes');
 
-    var wizardsPoints = allWizards
-      .map(function (wizard) {
+    var wizardsPoints = allWizards.
+      map(function (wizard) {
         var points = 0;
         if (wizard.colorCoat === playerWizardCoat.style.fill) {
           points += 2;
@@ -47,8 +47,8 @@
           points += 1;
         }
         return {points: points, wizard: wizard};
-      })
-      .sort(function (a, b) {
+      }).
+      sort(function (a, b) {
         if (a.points > b.points) {
           return -1;
         }

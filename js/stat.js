@@ -14,14 +14,15 @@
   var PLAYER_X = 50;
   var PLAYER_Y = 250;
 
+
   var renderCloud = function (ctx, x, y, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
   };
-
   var renderColumn = function (ctx, x, y, columnHeight) {
     ctx.fillRect(x, y, COLUMN_WIDTH, columnHeight);
   };
+
 
   var renderResult = function (ctx, playerName, playerNumber, color, columnHeight, playerResult) {
     ctx.fillText(playerName, CLOUD_X + PLAYER_X + (COLUMN_WIDTH + COLUMN_GAP) * (playerNumber - 1), PLAYER_Y);
@@ -30,6 +31,7 @@
     ctx.fillStyle = '#000';
     ctx.fillText(playerResult, CLOUD_X + PLAYER_X + (COLUMN_WIDTH + COLUMN_GAP) * (playerNumber - 1), CLOUD_HEIGHT - GAP - TEXT_HEIGHT - TEXT_GAP * 2 - columnHeight);
   };
+
 
   window.renderStatistics = function (ctx, names, times) {
     renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)');
@@ -49,7 +51,6 @@
           return window.util.getRandomBlueColor();
         }
       };
-
       renderResult(ctx, names[i], i + 1, getColumnColor(), (COLUMN_HEIGHT * times[i]) / window.util.getMaxTime(times), Math.floor(times[i]));
     }
   };

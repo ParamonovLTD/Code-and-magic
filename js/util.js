@@ -39,7 +39,6 @@
     var hex = parseInt(c, 10).toString(16);
     return hex.length === 1 ? '0' + hex : hex;
   };
-
   var rgbToHex = function (r, g, b) {
     return '#' + getHexComponent(r) + getHexComponent(g) + getHexComponent(b);
   };
